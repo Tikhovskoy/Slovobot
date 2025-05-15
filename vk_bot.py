@@ -12,10 +12,10 @@ from logging_utils import setup_logging
 logger = logging.getLogger(__name__)
 
 def reply_with_dialogflow(event, vk_api, project_id):
-    text = event.text
-    user_id = event.user_id
-
     try:
+        text = event.text
+        user_id = event.user_id
+
         response, is_fallback = detect_intent_text(
             text=text,
             user_id=user_id,
@@ -34,11 +34,11 @@ def reply_with_dialogflow(event, vk_api, project_id):
         logger.info(f"VK | User {user_id}: '{text}' -> '{response}'")
     except Exception as e:
         vk_api.messages.send(
-            user_id=user_id,
+            user_id=event.user_id,
             message="Извините, произошла ошибка.",
             random_id=random.randint(1, 1_000_000_000),
         )
-        logger.error(f"DialogFlow error for user {user_id}: {e}", exc_info=True)
+        logger.error(f"DialogFlow error for user {event.user_id}: {e}", exc_info=True)
 
 def main():
     env = Env()
@@ -46,10 +46,12 @@ def main():
     vk_group_token = env.str("VK_GROUP_TOKEN")
     dialogflow_project_id = env.str("DIALOGFLOW_PROJECT_ID")
     google_credentials = env.str("GOOGLE_APPLICATION_CREDENTIALS")
+    telegram_token = env.str("TELEGRAM_TOKEN")
+    telegram_chat_id = env.str("TELEGRAM_CHAT_ID")
     log_file_path = os.path.join("logs", "vk_bot.log")
 
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = google_credentials
-    setup_logging(log_file_path)
+    setup_logging(log_file_path, telegram_token, telegram_chat_id)
 
     vk_session = vk.VkApi(token=vk_group_token)
     vk_api = vk_session.get_api()

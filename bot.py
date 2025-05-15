@@ -46,12 +46,13 @@ def main():
     env = Env()
     env.read_env()
     telegram_token = env.str("TELEGRAM_TOKEN")
+    telegram_chat_id = env.str("TELEGRAM_CHAT_ID")
     google_project_id = env.str("DIALOGFLOW_PROJECT_ID")
     google_credentials = env.str("GOOGLE_APPLICATION_CREDENTIALS")
     log_file_path = os.path.join("logs", "bot.log")
 
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = google_credentials
-    setup_logging(log_file_path)
+    setup_logging(log_file_path, telegram_token, telegram_chat_id)
 
     updater = Updater(telegram_token, use_context=True)
     dp = updater.dispatcher
