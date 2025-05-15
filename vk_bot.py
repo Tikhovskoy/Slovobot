@@ -34,12 +34,15 @@ def reply_with_dialogflow(event, vk_api, project_id):
     user_id = event.user_id
 
     try:
-        response = detect_intent_text(
+        response, is_fallback = detect_intent_text(
             text=text,
             user_id=user_id,
             project_id=project_id,
             language_code="ru"
         )
+        if is_fallback:
+            logger.info(f"VK | User {user_id}: '{text}' -> fallback, бот молчит")
+            return
         vk_api.messages.send(
             user_id=user_id,
             message=response,
