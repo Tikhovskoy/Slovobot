@@ -1,5 +1,5 @@
 # Виртуальное окружение
-venv/
+venv310/
 ENV/
 env/
 .venv/
@@ -26,10 +26,11 @@ slovobot-support-*.json
 *.log
 *.sqlite3
 *.db
+logs/
 
 # Временные файлы ОС
 .DS_Store
 Thumbs.db
 
-# Jupyter (если используешь)
+# Jupyter
 .ipynb_checkpoints/

@@ -1,7 +1,9 @@
 import logging
+
 from google.cloud import dialogflow_v2 as dialogflow
 
 logger = logging.getLogger(__name__)
+
 
 def detect_intent_text(text, user_id, project_id, language_code="ru"):
     """Запрашивает у DialogFlow ответ на текст, возвращает (fulfillment_text, is_fallback)."""
