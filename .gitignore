@@ -1,0 +1,35 @@
+# Виртуальное окружение
+venv/
+ENV/
+env/
+.venv/
+
+# Файлы среды разработки
+.idea/
+.vscode/
+*.swp
+
+# Кэш Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Персональные/секретные файлы
+.env
+*.env
+.env.*
+dialogflow-key.json
+slovobot-support-*.json
+
+# Логи и базы
+*.log
+*.sqlite3
+*.db
+
+# Временные файлы ОС
+.DS_Store
+Thumbs.db
+
+# Jupyter (если используешь)
+.ipynb_checkpoints/
