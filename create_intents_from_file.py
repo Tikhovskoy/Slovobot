@@ -1,6 +1,7 @@
 import os
 import json
 import logging
+import argparse
 
 from environs import Env
 from google.cloud import dialogflow_v2 as dialogflow
@@ -96,7 +97,15 @@ def upsert_intents_from_file(project_id, json_path, language_code="ru"):
     )
 
 
-def main() -> None:
+def main():
+    parser = argparse.ArgumentParser(description="Upload/update Dialogflow intents from JSON.")
+    parser.add_argument(
+        "--json-path",
+        default=os.getenv("QUESTIONS_JSON_PATH", "questions.json"),
+        help="Путь к файлу с данными для интентов (по умолчанию: questions.json или переменная окружения QUESTIONS_JSON_PATH)",
+    )
+    args = parser.parse_args()
+
     env = Env()
     env.read_env()
     project_id = env.str("DIALOGFLOW_PROJECT_ID")
@@ -107,7 +116,7 @@ def main() -> None:
 
     upsert_intents_from_file(
         project_id,
-        json_path="questions.json",
+        json_path=args.json_path,
         language_code="ru",
     )
 

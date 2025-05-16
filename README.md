@@ -109,6 +109,45 @@ python create_intents_from_file.py
 
 ---
 
+### Гибкая настройка пути к файлу данных для массовой загрузки интентов
+
+Путь к файлу с вопросами и ответами можно настраивать без изменения кода.
+Выберите удобный для себя способ:
+
+**1. Через аргумент командной строки**
+(имеет наивысший приоритет):
+
+```bash
+python create_intents_from_file.py --json-path путь/к/вашему/файлу.json
+```
+
+**2. Через переменную окружения**
+(используется, если аргумент не задан):
+
+```bash
+QUESTIONS_JSON_PATH=./test_questions.json python create_intents_from_file.py
+```
+
+**3. Значение по умолчанию**
+Если ничего не задано, будет использован файл `questions.json` из текущей директории.
+
+---
+
+### Полный пример
+
+```bash
+# По умолчанию (questions.json)
+python create_intents_from_file.py
+
+# С кастомным файлом через аргумент:
+python create_intents_from_file.py --json-path ./data/my_questions.json
+
+# С кастомным файлом через переменную окружения:
+QUESTIONS_JSON_PATH=./data/my_questions.json python create_intents_from_file.py
+```
+
+---
+
 ## Пример запуска обоих ботов
 
 Открой два терминала и запусти:
