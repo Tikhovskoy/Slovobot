@@ -119,15 +119,11 @@ def main() -> None:
     log_file = os.path.join(log_dir, "create_intents.log")
     setup_logging(log_file)
 
-    try:
-        upsert_intents_from_file(
-            project_id,
-            json_path="questions.json",
-            language_code="ru",
-        )
-    except Exception:
-        logging.exception("Failed to upsert Dialogflow intents")
-        raise
+    upsert_intents_from_file(
+        project_id,
+        json_path="questions.json",
+        language_code="ru",
+    )
 
 
 if __name__ == "__main__":
