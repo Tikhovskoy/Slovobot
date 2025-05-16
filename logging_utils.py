@@ -1,5 +1,4 @@
 import logging
-import os
 from logging.handlers import RotatingFileHandler
 
 import telegram
@@ -34,7 +33,6 @@ def setup_logging(
     • вывод в консоль
     • ротация файла логов
     """
-    os.makedirs(os.path.dirname(log_file_path), exist_ok=True)
     formatter = logging.Formatter(
         "[%(asctime)s] [%(levelname)s] %(name)s: %(message)s"
     )

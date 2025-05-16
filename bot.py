@@ -1,3 +1,4 @@
+import os
 import logging
 
 from environs import Env
@@ -18,12 +19,10 @@ logger = logging.getLogger(__name__)
 
 
 def start(update: Update, context: CallbackContext) -> None:
-    """Handle /start command."""
     update.message.reply_text("Здравствуйте")
 
 
 def dialogflow_handler(update: Update, context: CallbackContext) -> None:
-    """Process incoming text via Dialogflow and reply."""
     text = update.message.text
     user_id = update.message.from_user.id
     project_id = context.bot_data.get("DIALOGFLOW_PROJECT_ID")
@@ -53,7 +52,6 @@ def dialogflow_handler(update: Update, context: CallbackContext) -> None:
 
 
 def main() -> None:
-    """Load env vars, configure logging and start the bot."""
     env = Env()
     env.read_env()
 
@@ -61,8 +59,10 @@ def main() -> None:
     telegram_chat_id = env.str("TELEGRAM_CHAT_ID")
     project_id = env.str("DIALOGFLOW_PROJECT_ID")
 
+    log_file = "logs/bot.log"
+    os.makedirs(os.path.dirname(log_file), exist_ok=True)
     setup_logging(
-        log_file_path="logs/bot.log",
+        log_file_path=log_file,
         bot_token=telegram_token,
         chat_id=telegram_chat_id,
     )

@@ -1,3 +1,4 @@
+import os
 import logging
 import random
 
@@ -13,10 +14,6 @@ logger = logging.getLogger(__name__)
 
 
 def reply_with_dialogflow(event, vk_api_client, project_id):
-    """
-    Обрабатывает входящее сообщение VK, запрашивает
-    ответ в Dialogflow и отсылает обратно.
-    """
     text = event.text
     user_id = event.user_id
 
@@ -71,7 +68,6 @@ def reply_with_dialogflow(event, vk_api_client, project_id):
 
 
 def main() -> None:
-    """Load env vars, configure logging and start VK longpoll."""
     env = Env()
     env.read_env()
 
@@ -80,8 +76,10 @@ def main() -> None:
     telegram_token = env.str("TELEGRAM_TOKEN")
     telegram_chat_id = env.str("TELEGRAM_CHAT_ID")
 
+    log_file = "logs/vk_bot.log"
+    os.makedirs(os.path.dirname(log_file), exist_ok=True)
     setup_logging(
-        log_file_path="logs/vk_bot.log",
+        log_file_path=log_file,
         bot_token=telegram_token,
         chat_id=telegram_chat_id,
     )

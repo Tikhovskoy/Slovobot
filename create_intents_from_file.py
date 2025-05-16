@@ -1,5 +1,5 @@
-import json
 import os
+import json
 import logging
 
 from environs import Env
@@ -9,10 +9,6 @@ from logging_utils import setup_logging
 
 
 def load_intents_map(project_id):
-    """
-    Загружает все существующие интенты агента
-    и возвращает словарь {display_name: IntentResource}.
-    """
     client = dialogflow.IntentsClient()
     parent = dialogflow.AgentsClient.agent_path(project_id)
     existing = client.list_intents(request={"parent": parent})
@@ -20,10 +16,6 @@ def load_intents_map(project_id):
 
 
 def make_intent_object(display_name, training_phrases_parts, message_texts):
-    """
-    Строит объект Intent с указанным display_name,
-    вариантами фраз и ответами.
-    """
     training_phrases = []
     for phrase in training_phrases_parts:
         part = dialogflow.Intent.TrainingPhrase.Part(text=phrase)
@@ -43,10 +35,6 @@ def make_intent_object(display_name, training_phrases_parts, message_texts):
 
 
 def upsert_intents_from_file(project_id, json_path, language_code="ru"):
-    """
-    Создает или обновляет интенты по данным из JSON-файла.
-    Если display_name уже существует, обновляет, иначе — создаёт.
-    """
     client = dialogflow.IntentsClient()
     parent = dialogflow.AgentsClient.agent_path(project_id)
 
@@ -109,14 +97,12 @@ def upsert_intents_from_file(project_id, json_path, language_code="ru"):
 
 
 def main() -> None:
-    """Чтение .env, настройка логирования и запуск upsert."""
     env = Env()
     env.read_env()
     project_id = env.str("DIALOGFLOW_PROJECT_ID")
 
-    log_dir = os.path.join(os.getcwd(), "logs")
-    os.makedirs(log_dir, exist_ok=True)
-    log_file = os.path.join(log_dir, "create_intents.log")
+    log_file = os.path.join("logs", "create_intents.log")
+    os.makedirs(os.path.dirname(log_file), exist_ok=True)
     setup_logging(log_file)
 
     upsert_intents_from_file(
