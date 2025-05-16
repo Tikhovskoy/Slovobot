@@ -1,9 +1,13 @@
 import logging
 import os
 from logging.handlers import RotatingFileHandler
+
 import telegram
 
+
 class TelegramLogHandler(logging.Handler):
+    """Отправляет ERROR-логи в указанный Telegram-чат."""
+
     def __init__(self, bot_token, chat_id):
         super().__init__()
         self.bot = telegram.Bot(token=bot_token)
@@ -12,19 +16,37 @@ class TelegramLogHandler(logging.Handler):
     def emit(self, record):
         try:
             log_entry = self.format(record)
-            self.bot.send_message(chat_id=self.chat_id, text=f"Лог {record.levelname}:\n{log_entry}")
+            self.bot.send_message(
+                chat_id=self.chat_id,
+                text=f"Лог {record.levelname}:\n{log_entry}",
+            )
         except Exception as e:
             print(f"Ошибка отправки лога в Telegram: {e}")
 
-def setup_logging(log_file_path: str, bot_token=None, chat_id=None) -> None:
+
+def setup_logging(
+    log_file_path: str,
+    bot_token=None,
+    chat_id=None,
+) -> None:
+    """
+    Конфигурирует root-логгер:
+    • вывод в консоль
+    • ротация файла логов
+    """
     os.makedirs(os.path.dirname(log_file_path), exist_ok=True)
-    formatter = logging.Formatter("[%(asctime)s] [%(levelname)s] %(name)s: %(message)s")
+    formatter = logging.Formatter(
+        "[%(asctime)s] [%(levelname)s] %(name)s: %(message)s"
+    )
 
     console_handler = logging.StreamHandler()
     console_handler.setFormatter(formatter)
 
     file_handler = RotatingFileHandler(
-        log_file_path, maxBytes=500_000, backupCount=5, encoding="utf-8"
+        log_file_path,
+        maxBytes=500_000,
+        backupCount=5,
+        encoding="utf-8",
     )
     file_handler.setFormatter(formatter)
 

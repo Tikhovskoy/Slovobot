@@ -1,7 +1,8 @@
-import logging
 import os
+import logging
 
 from environs import Env
+from google.api_core.exceptions import GoogleAPICallError
 from telegram import Update
 from telegram.ext import (
     CallbackContext,
@@ -16,10 +17,14 @@ from logging_utils import setup_logging
 
 logger = logging.getLogger(__name__)
 
+
 def start(update: Update, context: CallbackContext) -> None:
+    """Handle /start command."""
     update.message.reply_text("Здравствуйте")
 
+
 def dialogflow_handler(update: Update, context: CallbackContext) -> None:
+    """Process incoming text via Dialogflow and reply."""
     text = update.message.text
     user_id = update.message.from_user.id
     project_id = context.bot_data.get("DIALOGFLOW_PROJECT_ID")
@@ -32,38 +37,52 @@ def dialogflow_handler(update: Update, context: CallbackContext) -> None:
             project_id=project_id,
             language_code=language_code,
         )
+    except GoogleAPICallError as e:
+        logger.error("Dialogflow недоступен: %s", e, exc_info=True)
+        response_text = "Сервис временно недоступен, попробуйте позже."
+    else:
         logger.info(
-            f"TG | User {user_id}: '{text}' -> '{fulfillment_text}', fallback={is_fallback}"
+            "TG | User %s: '%s' -> '%s', fallback=%s",
+            user_id,
+            text,
+            fulfillment_text,
+            is_fallback,
         )
         response_text = fulfillment_text
-    except Exception as e:
-        logger.error(f"DialogFlow error: {e}", exc_info=True)
-        response_text = "Извините, не удалось получить ответ."
 
     update.message.reply_text(response_text)
 
-def main():
+
+def main() -> None:
+    """Load env vars, configure logging and start the bot."""
     env = Env()
     env.read_env()
+
     telegram_token = env.str("TELEGRAM_TOKEN")
     telegram_chat_id = env.str("TELEGRAM_CHAT_ID")
-    google_project_id = env.str("DIALOGFLOW_PROJECT_ID")
-    google_credentials = env.str("GOOGLE_APPLICATION_CREDENTIALS")
-    log_file_path = os.path.join("logs", "bot.log")
+    project_id = env.str("DIALOGFLOW_PROJECT_ID")
+    credentials = env.str("GOOGLE_APPLICATION_CREDENTIALS")
 
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = google_credentials
-    setup_logging(log_file_path, telegram_token, telegram_chat_id)
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credentials
+
+    setup_logging(
+        log_file_path=os.path.join("logs", "bot.log"),
+        bot_token=telegram_token,
+        chat_id=telegram_chat_id,
+    )
 
     updater = Updater(telegram_token, use_context=True)
-    dp = updater.dispatcher
+    dispatcher = updater.dispatcher
+    dispatcher.bot_data["DIALOGFLOW_PROJECT_ID"] = project_id
 
-    dp.bot_data["DIALOGFLOW_PROJECT_ID"] = google_project_id
-
-    dp.add_handler(CommandHandler("start", start))
-    dp.add_handler(MessageHandler(Filters.text & ~Filters.command, dialogflow_handler))
+    dispatcher.add_handler(CommandHandler("start", start))
+    dispatcher.add_handler(
+        MessageHandler(Filters.text & ~Filters.command, dialogflow_handler)
+    )
 
     updater.start_polling()
     updater.idle()
+
 
 if __name__ == "__main__":
     main()
