@@ -54,13 +54,14 @@
 
 ---
 
-## Пример `.env.example`
+## Пример `.env`
 
 ```env
 TELEGRAM_TOKEN=your-telegram-bot-token
 VK_GROUP_TOKEN=your-vk-group-token
 DIALOGFLOW_PROJECT_ID=your-dialogflow-project-id
 GOOGLE_APPLICATION_CREDENTIALS=your-service-account.json
+TELEGRAM_CHAT_ID=you-telegram-chat
 ````
 
 * **TELEGRAM\_TOKEN** — токен Telegram-бота от BotFather
