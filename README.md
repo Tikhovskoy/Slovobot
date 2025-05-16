@@ -4,6 +4,18 @@
 
 ---
 
+## Демонстрация возможностей
+
+### VK-бот
+
+![VK bot demo](docs/vk_bot.gif)
+
+### Telegram-бот
+
+![Telegram bot demo](docs/tg_bot.gif)
+
+---
+
 ##  Структура проекта
 
 - **bot.py** — основной скрипт Telegram-бота.
