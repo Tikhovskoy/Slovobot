@@ -6,11 +6,11 @@
 
 ## Демонстрация возможностей
 
-### VK-бот
+### [VK-бот](https://vk.com/club230495233)
 
 ![VK bot demo](docs/vk_bot.gif)
 
-### Telegram-бот
+### [Telegram-бот](https://t.me/SlovoAssistantBot)
 
 ![Telegram bot demo](docs/tg_bot.gif)
 
