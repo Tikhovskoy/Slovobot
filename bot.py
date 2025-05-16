@@ -24,7 +24,8 @@ def start(update: Update, context: CallbackContext) -> None:
 
 def dialogflow_handler(update: Update, context: CallbackContext) -> None:
     text = update.message.text
-    user_id = update.message.from_user.id
+    raw_user_id = update.message.from_user.id
+    user_id = f"tg-{raw_user_id}"  
     project_id = context.bot_data.get("DIALOGFLOW_PROJECT_ID")
     language_code = "ru"
 

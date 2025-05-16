@@ -15,7 +15,8 @@ logger = logging.getLogger(__name__)
 
 def reply_with_dialogflow(event, vk_api_client, project_id):
     text = event.text
-    user_id = event.user_id
+    raw_user_id = event.user_id
+    user_id = f"vk-{raw_user_id}" 
 
     try:
         response, is_fallback = detect_intent_text(
@@ -32,7 +33,7 @@ def reply_with_dialogflow(event, vk_api_client, project_id):
             exc_info=True,
         )
         vk_api_client.messages.send(
-            user_id=user_id,
+            user_id=raw_user_id,
             message="Сервис временно недоступен, попробуйте позже.",
             random_id=random.randint(1, 1_000_000_000),
         )
@@ -48,7 +49,7 @@ def reply_with_dialogflow(event, vk_api_client, project_id):
 
     try:
         vk_api_client.messages.send(
-            user_id=user_id,
+            user_id=raw_user_id,
             message=response,
             random_id=random.randint(1, 1_000_000_000),
         )
