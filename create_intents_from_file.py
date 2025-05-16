@@ -71,7 +71,7 @@ def upsert_intents_from_file(project_id, json_path, language_code="ru"):
         client.batch_update_intents(
             request={
                 "parent": parent,
-                "intents": to_update,
+                "intent_batch_inline": {"intents": to_update},
                 "language_code": language_code,
             }
         ).result()
