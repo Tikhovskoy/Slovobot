@@ -113,8 +113,6 @@ def main() -> None:
     env = Env()
     env.read_env()
     project_id = env.str("DIALOGFLOW_PROJECT_ID")
-    credentials = env.str("GOOGLE_APPLICATION_CREDENTIALS")
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credentials
 
     log_dir = os.path.join(os.getcwd(), "logs")
     os.makedirs(log_dir, exist_ok=True)

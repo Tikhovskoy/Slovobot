@@ -60,14 +60,12 @@
 TELEGRAM_TOKEN=your-telegram-bot-token
 VK_GROUP_TOKEN=your-vk-group-token
 DIALOGFLOW_PROJECT_ID=your-dialogflow-project-id
-GOOGLE_APPLICATION_CREDENTIALS=your-service-account.json
 TELEGRAM_CHAT_ID=you-telegram-chat
 ````
 
 * **TELEGRAM\_TOKEN** — токен Telegram-бота от BotFather
 * **VK\_GROUP\_TOKEN** — токен доступа для вашей группы ВК
 * **DIALOGFLOW\_PROJECT\_ID** — идентификатор проекта DialogFlow (см. настройки агента)
-* **GOOGLE\_APPLICATION\_CREDENTIALS** — путь до JSON-файла с ключом сервис-аккаунта Google
 
 ---
 

@@ -1,4 +1,3 @@
-import os
 import logging
 
 from environs import Env
@@ -61,12 +60,9 @@ def main() -> None:
     telegram_token = env.str("TELEGRAM_TOKEN")
     telegram_chat_id = env.str("TELEGRAM_CHAT_ID")
     project_id = env.str("DIALOGFLOW_PROJECT_ID")
-    credentials = env.str("GOOGLE_APPLICATION_CREDENTIALS")
-
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credentials
 
     setup_logging(
-        log_file_path=os.path.join("logs", "bot.log"),
+        log_file_path="logs/bot.log",
         bot_token=telegram_token,
         chat_id=telegram_chat_id,
     )

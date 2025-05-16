@@ -1,5 +1,4 @@
 import logging
-import os
 import random
 
 from environs import Env
@@ -78,14 +77,11 @@ def main() -> None:
 
     vk_token = env.str("VK_GROUP_TOKEN")
     project_id = env.str("DIALOGFLOW_PROJECT_ID")
-    credentials = env.str("GOOGLE_APPLICATION_CREDENTIALS")
     telegram_token = env.str("TELEGRAM_TOKEN")
     telegram_chat_id = env.str("TELEGRAM_CHAT_ID")
 
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credentials
-
     setup_logging(
-        log_file_path=os.path.join("logs", "vk_bot.log"),
+        log_file_path="logs/vk_bot.log",
         bot_token=telegram_token,
         chat_id=telegram_chat_id,
     )
