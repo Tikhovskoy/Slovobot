@@ -25,16 +25,16 @@ def start(update: Update, context: CallbackContext) -> None:
 def dialogflow_handler(update: Update, context: CallbackContext) -> None:
     text = update.message.text
     raw_user_id = update.message.from_user.id
-    user_id = f"tg-{raw_user_id}"  
+    user_id = f"tg-{raw_user_id}"
     project_id = context.bot_data.get("DIALOGFLOW_PROJECT_ID")
     language_code = "ru"
 
     try:
         fulfillment_text, is_fallback = detect_intent_text(
-            text=text,
-            user_id=user_id,
-            project_id=project_id,
-            language_code=language_code,
+            text,
+            user_id,
+            project_id,
+            language_code,
         )
     except GoogleAPICallError as e:
         logger.error("Dialogflow недоступен: %s", e, exc_info=True)

@@ -16,14 +16,14 @@ logger = logging.getLogger(__name__)
 def reply_with_dialogflow(event, vk_api_client, project_id):
     text = event.text
     raw_user_id = event.user_id
-    user_id = f"vk-{raw_user_id}" 
+    user_id = f"vk-{raw_user_id}"
 
     try:
         response, is_fallback = detect_intent_text(
-            text=text,
-            user_id=user_id,
-            project_id=project_id,
-            language_code="ru",
+            text,
+            user_id,
+            project_id,
+            "ru",
         )
     except GoogleAPICallError as e:
         logger.error(
