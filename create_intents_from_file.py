@@ -108,6 +108,9 @@ def main():
 
     env = Env()
     env.read_env()
+    credentials = env.str("GOOGLE_APPLICATION_CREDENTIALS")
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credentials
+
     project_id = env.str("DIALOGFLOW_PROJECT_ID")
 
     log_file = os.path.join("logs", "create_intents.log")

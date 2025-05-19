@@ -55,6 +55,8 @@ def dialogflow_handler(update: Update, context: CallbackContext) -> None:
 def main() -> None:
     env = Env()
     env.read_env()
+    credentials = env.str("GOOGLE_APPLICATION_CREDENTIALS")
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credentials
 
     telegram_token = env.str("TELEGRAM_TOKEN")
     telegram_chat_id = env.str("TELEGRAM_CHAT_ID")

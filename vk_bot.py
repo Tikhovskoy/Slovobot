@@ -71,6 +71,8 @@ def reply_with_dialogflow(event, vk_api_client, project_id):
 def main() -> None:
     env = Env()
     env.read_env()
+    credentials = env.str("GOOGLE_APPLICATION_CREDENTIALS")
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credentials
 
     vk_token = env.str("VK_GROUP_TOKEN")
     project_id = env.str("DIALOGFLOW_PROJECT_ID")
